@@ -4,7 +4,8 @@ interface
 
 uses
   System.SysUtils, System.Classes, System.Actions, FMX.ActnList, FMX.Forms,
-  FMX.Types, FMX.Dialogs, StrUtils, FMX.Grid.Style, FMX.Grid;
+  FMX.Types, FMX.Dialogs, StrUtils, FMX.Grid.Style, FMX.Grid, FMX.Controls,
+  FMX.DialogService, System.UITypes;
 
 type
   TdmComponent = class(TDataModule)
@@ -12,8 +13,15 @@ type
     actClose: TAction;
     OpenDialog: TOpenDialog;
     actOpenFile: TAction;
+    SaveDialogTXT: TSaveDialog;
+    actSaveToTXT: TAction;
+    SaveDialogCSV: TSaveDialog;
+    actSaveToCSV: TAction;
+    StyleBook: TStyleBook;
     procedure actCloseExecute(Sender: TObject);
     procedure actOpenFileExecute(Sender: TObject);
+    procedure actSaveToTXTExecute(Sender: TObject);
+    procedure actSaveToCSVExecute(Sender: TObject);
   private
     { Private declarations }
   public
@@ -68,12 +76,70 @@ begin
   end;
 {$ENDREGION}
 {$REGION 'Create col'}
-  for CountColums := 0 to NumberOfColumns.ToInteger do
+  for CountColums := 0 to NumberOfColumns.ToInteger - 1 do
   begin
     formMain.StringGrid.AddObject(TStringColumn.Create(self));
     formMain.StringGrid.Columns[CountColums].Header := IntToStr(Random(100));
+    formMain.StringGrid.RowCount := 2;
   end;
 {$ENDREGION}
+end;
+
+procedure TdmComponent.actSaveToCSVExecute(Sender: TObject);
+var
+  f: textfile;
+  i, j: integer;
+begin
+  if SaveDialogCSV.Execute then
+    AssignFile(f, SaveDialogCSV.FileName);
+  if FileExists(SaveDialogCSV.FileName) = true then
+    TDialogService.MessageDialog('This file already exists',
+      TMsgDlgType.mtConfirmation, mbYesNo, TMsgDlgBtn.mbNo, 0,
+      procedure(const AResult: TModalResult)
+      begin
+        if (AResult = mrYes) then
+        begin
+          Rewrite(f);
+        end;
+      end)
+
+  else
+  begin
+    Rewrite(f);
+    for i := 0 to formMain.StringGrid.ColumnCount - 1 do
+      for j := 0 to formMain.StringGrid.RowCount - 1 do
+        Write(f, formMain.StringGrid.Cells[j, i] + formMain.edtSeparator.Text);
+
+    CloseFile(f);
+  end;
+end;
+
+procedure TdmComponent.actSaveToTXTExecute(Sender: TObject);
+var
+  f: textfile;
+  i, j: integer;
+begin
+  if SaveDialogTXT.Execute then
+  begin
+    AssignFile(f, SaveDialogTXT.FileName);
+    if FileExists(SaveDialogTXT.FileName) = true then
+      TDialogService.MessageDialog('This file already exists',
+        TMsgDlgType.mtConfirmation, mbYesNo, TMsgDlgBtn.mbNo, 0,
+        procedure(const AResult: TModalResult)
+        begin
+          if (AResult = mrYes) then
+          begin
+            Rewrite(f);
+          end;
+        end)
+
+    else
+      Rewrite(f);
+    for i := 0 to formMain.StringGrid.ColumnCount - 1 do
+      for j := 0 to formMain.StringGrid.RowCount - 1 do
+        Write(f, formMain.StringGrid.Cells[j, j] + formMain.edtSeparator.Text);
+    CloseFile(f);
+  end;
 end;
 
 end.
