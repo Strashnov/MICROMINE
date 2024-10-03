@@ -1,16 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
 	<Transactions>
-    <Transaction>1899.12.30 00:00:00.000.482,=\\Mac\Home\Documents\Embarcadero\Studio\Projects\FormUnit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.038,C:\MICROMINE\app\Main.pas=\\Mac\Home\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.371,=C:\MICROMINE\app\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.502,=\\Mac\Home\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.301,=\\Mac\Home\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.002,C:\MICROMINE\app\DataModule\Components.pas=C:\MICROMINE\app\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.002,C:\MICROMINE\app\DataModule\Components.dfm=C:\MICROMINE\app\Unit1.dfm</Transaction>
     <Transaction>1899.12.30 00:00:00.000.670,=\\Mac\Home\Documents\Embarcadero\Studio\Projects\WebModuleUnit1.pas</Transaction>
-    <Transaction>2024.10.03 12:06:54.502,=\\Mac\Home\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
-    <Transaction>2024.10.03 12:07:13.038,C:\MICROMINE\app\Main.pas=\\Mac\Home\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
-    <Transaction>2024.10.03 12:07:13.038,C:\MICROMINE\app\Main.fmx=\\Mac\Home\Documents\Embarcadero\Studio\Projects\Unit1.fmx</Transaction>
-    <Transaction>2024.10.03 12:07:22.529,C:\MICROMINE\app\MICROMINE.dproj=\\Mac\Home\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
-    <Transaction>2024.10.03 12:11:03.371,=C:\MICROMINE\app\Unit1.pas</Transaction>
-    <Transaction>2024.10.03 12:11:52.002,C:\MICROMINE\app\DataModule\Components.pas=C:\MICROMINE\app\Unit1.pas</Transaction>
-    <Transaction>2024.10.03 12:11:52.002,C:\MICROMINE\app\DataModule\Components.dfm=C:\MICROMINE\app\Unit1.dfm</Transaction>
-  </Transactions>  <ActiveMobileDevice>   <NoProfile Android="emulator-5554" Android64="emulator-5554"/>
-  </ActiveMobileDevice>
+    <Transaction>1899.12.30 00:00:00.000.038,C:\MICROMINE\app\Main.fmx=\\Mac\Home\Documents\Embarcadero\Studio\Projects\Unit1.fmx</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.482,=\\Mac\Home\Documents\Embarcadero\Studio\Projects\FormUnit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.529,C:\MICROMINE\app\MICROMINE.dproj=\\Mac\Home\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+  </Transactions>
+	<ActiveMobileDevice>
+		<NoProfile Android="emulator-5554" Android64=""/>
+	</ActiveMobileDevice>
 </BorlandProject>

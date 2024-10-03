@@ -35,12 +35,24 @@ object formMain: TformMain
     DataDetectorTypes = []
     Align = Client
     Size.Width = 640.000000000000000000
-    Size.Height = 458.000000000000000000
+    Size.Height = 281.000000000000000000
     Size.PlatformDefault = False
     StyleLookup = 'memostyle'
     TabOrder = 2
     Viewport.Width = 636.000000000000000000
-    Viewport.Height = 454.000000000000000000
+    Viewport.Height = 277.000000000000000000
+  end
+  object StringGrid: TStringGrid
+    Align = Top
+    CanFocus = True
+    ClipChildren = True
+    Size.Width = 640.000000000000000000
+    Size.Height = 177.000000000000000000
+    Size.PlatformDefault = False
+    StyleLookup = 'gridstyle'
+    TabOrder = 3
+    Viewport.Width = 636.000000000000000000
+    Viewport.Height = 152.000000000000000000
   end
   object MainMenu: TMainMenu
     Left = 584

@@ -3,10 +3,11 @@ unit Main;
 interface
 
 uses
-  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
+  System.SysUtils, System.Types, System.UITypes, System.Classes,
+  System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Menus,
   FMX.StdCtrls, FMX.Controls.Presentation, FMX.Memo.Types, FMX.ScrollBox,
-  FMX.Memo;
+  FMX.Memo, System.Rtti, FMX.Grid.Style, FMX.Grid;
 
 type
   TformMain = class(TForm)
@@ -18,6 +19,7 @@ type
     StatusBar: TStatusBar;
     labExtensionFile: TLabel;
     memText: TMemo;
+    StringGrid: TStringGrid;
   private
     { Private declarations }
   public
