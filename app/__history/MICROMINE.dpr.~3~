@@ -1,0 +1,16 @@
+program MICROMINE;
+
+uses
+  System.StartUpCopy,
+  FMX.Forms,
+  Main in 'Main.pas' {formMain},
+  Components in 'DataModule\Components.pas' {DataModule1: TDataModule};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.CreateForm(TformMain, formMain);
+  Application.CreateForm(TDataModule1, DataModule1);
+  Application.Run;
+end.

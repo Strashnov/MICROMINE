@@ -1,0 +1,25 @@
+object formMain: TformMain
+  Left = 0
+  Top = 0
+  Caption = 'formMain'
+  ClientHeight = 480
+  ClientWidth = 640
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  DesignerMasterStyle = 0
+  object MainMenu: TMainMenu
+    Left = 584
+    Top = 64
+    object miFile: TMenuItem
+      Text = '&File'
+      object miClose: TMenuItem
+        Locked = True
+        Text = 'Close'
+      end
+    end
+    object miHelp: TMenuItem
+      Text = '&Help'
+    end
+  end
+end
