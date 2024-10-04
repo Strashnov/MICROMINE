@@ -47,9 +47,9 @@ end;
 procedure TdmComponent.actOpenFileExecute(Sender: TObject);
 var
   MicromineFile: textfile;
-  s, NumberOfColumns: string;
+  s, NumberOfColumns, StringCopy: string;
   Count, CountLinesFile, VariableToFile: integer;
-  CountColums: integer;
+  CountColums, i: integer;
 begin
 {$REGION 'Open text file'}
   Count := 0;
@@ -61,17 +61,36 @@ begin
     formMain.Caption := Copy(s, 0, 37); // Загрузить первую строку
     while not(eof(MicromineFile)) do
     begin
-      Readln(MicromineFile, s);
       Inc(Count); // подсчет количество строк
+      Readln(MicromineFile, s);
       for CountLinesFile := 0 to Count do
       begin
         VariableToFile := pos('VARIABLES', s, 1);
         if VariableToFile <> 0 then
           NumberOfColumns := Copy(s, 4055, 2);
-        formMain.labExtensionFile.Text := NumberOfColumns;
+        formMain.labExtensionFile.Text := Count.ToString; // NumberOfColumns;
         // Узнаем количество столбцов в нашем файле
+
+        begin
+          Readln(MicromineFile, s);
+          if pos('EAST', s, 1) <> 0 then
+          begin
+            i := Length(s);
+            StringCopy := Copy(s, 0, i);  //Скопируем всю строку целиком
+            var One: integer;
+            var OneString, TwoString:string;
+           // One := pos('EAST', StringCopy);
+            //OneString:=Copy(StringCopy, One, Pos(' ',StringCopy)); //Скопируем для первого пробела
+
+            One := pos('R', StringCopy);
+            TwoString:=Copy(StringCopy, One, 1); //Скопируем символ типа данных (R, N, C)
+            ShowMessage(TwoString);
+          end;
+        end;
+
       end;
     end;
+
     CloseFile(MicromineFile);
   end;
 {$ENDREGION}

@@ -4,7 +4,8 @@ interface
 
 uses
   System.SysUtils, System.Classes, System.Actions, FMX.ActnList, FMX.Forms,
-  FMX.Types, FMX.Dialogs, StrUtils, FMX.Grid.Style, FMX.Grid, FMX.Controls;
+  FMX.Types, FMX.Dialogs, StrUtils, FMX.Grid.Style, FMX.Grid, FMX.Controls,
+  FMX.DialogService, System.UITypes;
 
 type
   TdmComponent = class(TDataModule)
@@ -48,7 +49,7 @@ var
   MicromineFile: textfile;
   s, NumberOfColumns: string;
   Count, CountLinesFile, VariableToFile: integer;
-  CountColums: integer;
+  CountColums,i: integer;
 begin
 {$REGION 'Open text file'}
   Count := 0;
@@ -60,17 +61,28 @@ begin
     formMain.Caption := Copy(s, 0, 37); // Загрузить первую строку
     while not(eof(MicromineFile)) do
     begin
-      Readln(MicromineFile, s);
       Inc(Count); // подсчет количество строк
+      Readln(MicromineFile, s);
       for CountLinesFile := 0 to Count do
       begin
         VariableToFile := pos('VARIABLES', s, 1);
         if VariableToFile <> 0 then
           NumberOfColumns := Copy(s, 4055, 2);
-        formMain.labExtensionFile.Text := NumberOfColumns;
+        formMain.labExtensionFile.Text := Count.ToString; // NumberOfColumns;
         // Узнаем количество столбцов в нашем файле
+
+        begin
+          Readln(MicromineFile, s);
+          if pos('EAST', s, 1) <> 0 then
+            begin
+            i:=Length(s);
+            ShowMessage(Copy(s,0,i));
+            end;
+        end;
+
       end;
     end;
+
     CloseFile(MicromineFile);
   end;
 {$ENDREGION}
@@ -90,15 +102,27 @@ var
   i, j: integer;
 begin
   if SaveDialogCSV.Execute then
-  begin
     AssignFile(f, SaveDialogCSV.FileName);
+  if FileExists(SaveDialogCSV.FileName) = true then
+    TDialogService.MessageDialog('This file already exists',
+      TMsgDlgType.mtConfirmation, mbYesNo, TMsgDlgBtn.mbNo, 0,
+      procedure(const AResult: TModalResult)
+      begin
+        if (AResult = mrYes) then
+        begin
+          Rewrite(f);
+        end;
+      end)
+
+  else
+  begin
     Rewrite(f);
     for i := 0 to formMain.StringGrid.ColumnCount - 1 do
       for j := 0 to formMain.StringGrid.RowCount - 1 do
         Write(f, formMain.StringGrid.Cells[j, i] + formMain.edtSeparator.Text);
+
     CloseFile(f);
   end;
-
 end;
 
 procedure TdmComponent.actSaveToTXTExecute(Sender: TObject);
@@ -109,10 +133,22 @@ begin
   if SaveDialogTXT.Execute then
   begin
     AssignFile(f, SaveDialogTXT.FileName);
-    Rewrite(f);
+    if FileExists(SaveDialogTXT.FileName) = true then
+      TDialogService.MessageDialog('This file already exists',
+        TMsgDlgType.mtConfirmation, mbYesNo, TMsgDlgBtn.mbNo, 0,
+        procedure(const AResult: TModalResult)
+        begin
+          if (AResult = mrYes) then
+          begin
+            Rewrite(f);
+          end;
+        end)
+
+    else
+      Rewrite(f);
     for i := 0 to formMain.StringGrid.ColumnCount - 1 do
       for j := 0 to formMain.StringGrid.RowCount - 1 do
-        Write(f, formMain.StringGrid.Cells[j, i] + formMain.edtSeparator.Text);
+        Write(f, formMain.StringGrid.Cells[j, j] + formMain.edtSeparator.Text);
     CloseFile(f);
   end;
 end;
