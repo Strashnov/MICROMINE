@@ -31,6 +31,16 @@ object formMain: TformMain
       Text = 'labExtensionFile'
       TabOrder = 0
     end
+    object ProgressBar: TProgressBar
+      Align = Left
+      Max = 17.000000000000000000
+      Orientation = Horizontal
+      Position.X = 90.000000000000000000
+      Size.Width = 100.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = 'progressbarstyle'
+    end
   end
   object memText: TMemo
     Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
@@ -110,7 +120,7 @@ object formMain: TformMain
       Align = MostRight
       StyleLookup = 'editstyle'
       TabOrder = 0
-      Text = ':'
+      Text = ';'
       TextSettings.Font.Family = 'Arial'
       TextSettings.Font.Size = 14.000000000000000000
       TextSettings.Font.StyleExt = {00070000000000000004000000}

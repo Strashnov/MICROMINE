@@ -20,8 +20,8 @@ type
     StyleBook: TStyleBook;
     procedure actCloseExecute(Sender: TObject);
     procedure actOpenFileExecute(Sender: TObject);
-    procedure actSaveToTXTExecute(Sender: TObject);
     procedure actSaveToCSVExecute(Sender: TObject);
+    procedure actSaveToTXTExecute(Sender: TObject);
   private
     { Private declarations }
   public
@@ -36,7 +36,7 @@ implementation
 
 {%CLASSGROUP 'FMX.Controls.TControl'}
 
-uses Main;
+uses Main, ExportToFile;
 {$R *.dfm}
 
 procedure TdmComponent.actCloseExecute(Sender: TObject);
@@ -50,8 +50,8 @@ var
   s, NumberOfColumns, StringCopy: string;
   Count, CountLinesFile, VariableToFile: integer;
   CountColums, i: integer;
+  OneString, TwoString, ThreeString, FourString, FiveString: string;
 begin
-{$REGION 'Open text file'}
   Count := 0;
   if OpenDialog.Execute then
   begin
@@ -59,6 +59,7 @@ begin
     Reset(MicromineFile);
     Readln(MicromineFile, s);
     formMain.Caption := Copy(s, 0, 37); // Загрузить первую строку
+{$REGION 'Находим переменную, возврат число в переменной и сколько строк в файле'}
     while not(eof(MicromineFile)) do
     begin
       Inc(Count); // подсчет количество строк
@@ -68,96 +69,65 @@ begin
         VariableToFile := pos('VARIABLES', s, 1);
         if VariableToFile <> 0 then
           NumberOfColumns := Copy(s, 4055, 2);
-        formMain.labExtensionFile.Text := Count.ToString; // NumberOfColumns;
+        formMain.labExtensionFile.Text := NumberOfColumns; // Count.ToString; //
         // Узнаем количество столбцов в нашем файле
-
-        begin
-          Readln(MicromineFile, s);
-          if pos('EAST', s, 1) <> 0 then
-          begin
-            i := Length(s);
-            StringCopy := Copy(s, 0, i);  //Скопируем всю строку целиком
-            var One: integer;
-            var OneString, TwoString:string;
-           // One := pos('EAST', StringCopy);
-            //OneString:=Copy(StringCopy, One, Pos(' ',StringCopy)); //Скопируем для первого пробела
-
-            One := pos('R', StringCopy);
-            TwoString:=Copy(StringCopy, One, 1); //Скопируем символ типа данных (R, N, C)
-            ShowMessage(TwoString);
-          end;
-        end;
-
       end;
     end;
-
-    CloseFile(MicromineFile);
-  end;
 {$ENDREGION}
 {$REGION 'Create col'}
-  for CountColums := 0 to NumberOfColumns.ToInteger - 1 do
-  begin
-    formMain.StringGrid.AddObject(TStringColumn.Create(self));
-    formMain.StringGrid.Columns[CountColums].Header := IntToStr(Random(100));
-    formMain.StringGrid.RowCount := 2;
+    for CountColums := 0 to NumberOfColumns.ToInteger - 1 do
+    begin
+      // if CountLinesFile = 1 then
+      // begin
+      Readln(MicromineFile, s);
+      i := Length(s); // Подсчитаем количество символов в строке
+      StringCopy := Copy(s, 0, i); // Скопируем всю строку целиком
+
+      // Разбираем строку
+      OneString := Copy(StringCopy, 1, 10); // Коприуем имя до 10 символов
+      TwoString := Copy(StringCopy, 11, 3); // Копируем символ типа данных
+      ThreeString := Copy(StringCopy, 14, 3); // Копируем число до запятой
+      FourString := Copy(StringCopy, 17, 1); // Копируем остаток
+      FiveString := Trim(Copy(StringCopy, 19, 255)); // Копируем описание
+      // ShowMessage(OneString);
+
+      formMain.StringGrid.AddObject(TStringColumn.Create(self));
+      formMain.StringGrid.Columns[CountColums].Header := OneString;
+      // IntToStr(Random(100));
+      formMain.StringGrid.RowCount := 2;
+
+      formMain.ProgressBar.Value := CountColums;
+    end;
+    // end;
+    // {$ENDREGION}
   end;
-{$ENDREGION}
+
+  CloseFile(MicromineFile);
 end;
 
 procedure TdmComponent.actSaveToCSVExecute(Sender: TObject);
 var
-  f: textfile;
-  i, j: integer;
+  ExportToCSV: TExportToFile;
 begin
-  if SaveDialogCSV.Execute then
-    AssignFile(f, SaveDialogCSV.FileName);
-  if FileExists(SaveDialogCSV.FileName) = true then
-    TDialogService.MessageDialog('This file already exists',
-      TMsgDlgType.mtConfirmation, mbYesNo, TMsgDlgBtn.mbNo, 0,
-      procedure(const AResult: TModalResult)
-      begin
-        if (AResult = mrYes) then
-        begin
-          Rewrite(f);
-        end;
-      end)
-
-  else
-  begin
-    Rewrite(f);
-    for i := 0 to formMain.StringGrid.ColumnCount - 1 do
-      for j := 0 to formMain.StringGrid.RowCount - 1 do
-        Write(f, formMain.StringGrid.Cells[j, i] + formMain.edtSeparator.Text);
-
-    CloseFile(f);
+  ExportToCSV := TExportToFile.Create;
+  try
+    ExportToCSV.csvORtxt(SaveDialogCSV, formMain.StringGrid,
+      formMain.edtSeparator);
+  finally
+    ExportToCSV.Free;
   end;
 end;
 
 procedure TdmComponent.actSaveToTXTExecute(Sender: TObject);
 var
-  f: textfile;
-  i, j: integer;
+  ExportToTxt: TExportToFile;
 begin
-  if SaveDialogTXT.Execute then
-  begin
-    AssignFile(f, SaveDialogTXT.FileName);
-    if FileExists(SaveDialogTXT.FileName) = true then
-      TDialogService.MessageDialog('This file already exists',
-        TMsgDlgType.mtConfirmation, mbYesNo, TMsgDlgBtn.mbNo, 0,
-        procedure(const AResult: TModalResult)
-        begin
-          if (AResult = mrYes) then
-          begin
-            Rewrite(f);
-          end;
-        end)
-
-    else
-      Rewrite(f);
-    for i := 0 to formMain.StringGrid.ColumnCount - 1 do
-      for j := 0 to formMain.StringGrid.RowCount - 1 do
-        Write(f, formMain.StringGrid.Cells[j, j] + formMain.edtSeparator.Text);
-    CloseFile(f);
+  ExportToTxt := TExportToFile.Create;
+  try
+    ExportToTxt.csvORtxt(SaveDialogTXT, formMain.StringGrid,
+      formMain.edtSeparator);
+  finally
+    ExportToTxt.Free;
   end;
 end;
 

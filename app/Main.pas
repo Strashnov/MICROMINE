@@ -27,6 +27,7 @@ type
     ToolBar1: TToolBar;
     labSeparator: TLabel;
     SpeedButton1: TSpeedButton;
+    ProgressBar: TProgressBar;
   private
     { Private declarations }
   public

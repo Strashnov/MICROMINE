@@ -1,0 +1,63 @@
+unit ExportToFile;
+
+interface
+
+uses FMX.DialogService, System.UITypes, FMX.Dialogs, FMX.Grid, FMX.Edit,
+  System.SysUtils;
+
+Type
+  /// <summary>
+  ///
+  /// </summary>
+  TExportToFile = class sealed(TObject)
+  private
+    FColumn: Integer;
+    FRows: Integer;
+    FFile: TextFile;
+  public
+    procedure CSV(FileName: TOpenDialog; Grid: TStringGrid; Seporator: TEdit);
+  end;
+
+implementation
+
+{ TExportToFile }
+
+procedure TExportToFile.CSV(FileName: TOpenDialog; Grid: TStringGrid;
+  Seporator: TEdit);
+const
+  MESSAGE_DIALOG: string = 'This file already exists';
+begin
+  AssignFile(FFile, FileName.ToString);
+  begin
+    begin
+      if FileExists(FileName.ToString) = true then
+        TDialogService.MessageDialog(MESSAGE_DIALOG, TMsgDlgType.mtConfirmation,
+          mbYesNo, TMsgDlgBtn.mbNo, 0,
+          procedure(const AResult: TModalResult)
+          begin
+            if (AResult = mrYes) then
+            begin
+              Rewrite(FFile);
+            end;
+          end)
+
+      else
+      begin
+        Rewrite(FFile);
+        for FRows := 0 to Grid.RowCount - 1 do
+        begin
+          for FColumn := 0 to Grid.ColumnCount - 1 do
+          begin
+            if FColumn > 0 then
+              Write(FFile, Seporator.Text);
+            Write(FFile, Grid.Cells[FColumn, FRows]);
+          end;
+          Writeln(FFile);
+        end;
+        CloseFile(FFile);
+      end;
+    end;
+  end;
+end;
+
+end.

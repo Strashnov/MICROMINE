@@ -1,0 +1,65 @@
+unit ExportToFile;
+
+interface
+
+uses FMX.DialogService, System.UITypes, FMX.Dialogs, FMX.Grid, FMX.Edit,
+  System.SysUtils;
+
+Type
+  /// <summary>
+  /// Import from stringgrid to file csv or txt
+  /// </summary>
+  TExportToFile = class sealed(TObject)
+  private
+    FFile: TextFile;
+  public
+    constructor csvORtxt(SaveDialog: TSaveDialog; Grid: TStringGrid;
+      Seporator: TEdit);
+  end;
+
+implementation
+
+{ TExportToFile }
+
+constructor TExportToFile.csvORtxt(SaveDialog: TSaveDialog; Grid: TStringGrid;
+  Seporator: TEdit);
+var
+  Rows, Column: Integer;
+const
+  MESSAGE_DIALOG: string = 'This file already exists';
+begin
+  if SaveDialog.Execute then
+    AssignFile(FFile, SaveDialog.FileName);
+  begin
+    begin
+      if FileExists(SaveDialog.FileName) = true then
+        TDialogService.MessageDialog(MESSAGE_DIALOG, TMsgDlgType.mtConfirmation,
+          mbYesNo, TMsgDlgBtn.mbNo, 0,
+          procedure(const AResult: TModalResult)
+          begin
+            if (AResult = mrYes) then
+            begin
+              Rewrite(FFile);
+            end;
+          end)
+
+      else
+      begin
+        Rewrite(FFile);
+        for Rows := 0 to Grid.RowCount - 1 do
+        begin
+          for Column := 0 to Grid.ColumnCount - 1 do
+          begin
+            if Column > 0 then
+              Write(FFile, Seporator.Text);
+            Write(FFile, Grid.Cells[Column, Rows]);
+          end;
+          Writeln(FFile);
+        end;
+        CloseFile(FFile);
+      end;
+    end;
+  end;
+end;
+
+end.

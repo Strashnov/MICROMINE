@@ -4,7 +4,8 @@ uses
   System.StartUpCopy,
   FMX.Forms,
   Main in 'Main.pas' {formMain},
-  Components in 'DataModule\Components.pas' {dmComponent: TDataModule};
+  Components in 'DataModule\Components.pas' {dmComponent: TDataModule},
+  ExportToFile in 'Unit\ExportToFile.pas';
 
 {$R *.res}
 
