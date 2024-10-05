@@ -18,10 +18,12 @@ type
     SaveDialogCSV: TSaveDialog;
     actSaveToCSV: TAction;
     StyleBook: TStyleBook;
+    actAbout: TAction;
     procedure actCloseExecute(Sender: TObject);
     procedure actOpenFileExecute(Sender: TObject);
     procedure actSaveToCSVExecute(Sender: TObject);
     procedure actSaveToTXTExecute(Sender: TObject);
+    procedure actAboutExecute(Sender: TObject);
   private
     { Private declarations }
   public
@@ -36,8 +38,13 @@ implementation
 
 {%CLASSGROUP 'FMX.Controls.TControl'}
 
-uses Main, ExportToFile;
+uses Main, ExportToFile, About;
 {$R *.dfm}
+
+procedure TdmComponent.actAboutExecute(Sender: TObject);
+begin
+  formAbout.ShowModal;
+end;
 
 procedure TdmComponent.actCloseExecute(Sender: TObject);
 begin
@@ -105,27 +112,25 @@ begin
   CloseFile(MicromineFile);
 end;
 
-procedure TdmComponent.actSaveToCSVExecute(Sender: TObject);
+procedure TdmComponent.actSaveToCSVExecute(Sender: TObject); // Export to CSV
 var
   ExportToCSV: TExportToFile;
 begin
   ExportToCSV := TExportToFile.Create;
   try
-    ExportToCSV.csvORtxt(SaveDialogCSV, formMain.StringGrid,
-      formMain.edtSeparator);
+    ExportToCSV.Data(SaveDialogCSV, formMain.StringGrid, formMain.edtSeparator);
   finally
     ExportToCSV.Free;
   end;
 end;
 
-procedure TdmComponent.actSaveToTXTExecute(Sender: TObject);
+procedure TdmComponent.actSaveToTXTExecute(Sender: TObject); // Export to TXT
 var
   ExportToTxt: TExportToFile;
 begin
   ExportToTxt := TExportToFile.Create;
   try
-    ExportToTxt.csvORtxt(SaveDialogTXT, formMain.StringGrid,
-      formMain.edtSeparator);
+    ExportToTxt.Data(SaveDialogTXT, formMain.StringGrid, formMain.edtSeparator);
   finally
     ExportToTxt.Free;
   end;

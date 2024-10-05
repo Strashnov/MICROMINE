@@ -22,6 +22,11 @@ object dmComponent: TdmComponent
       Text = 'csv'
       OnExecute = actSaveToCSVExecute
     end
+    object actAbout: TAction
+      Text = 'About'
+      ShortCut = 112
+      OnExecute = actAboutExecute
+    end
   end
   object OpenDialog: TOpenDialog
     Filter = 'Micromine|*.STR|Al file|*.*'
@@ -33579,6 +33584,6 @@ object dmComponent: TdmComponent
           426C61636B000000}
       end>
     Left = 264
-    Top = 24
+    Top = 16
   end
 end

@@ -51,8 +51,8 @@ object formMain: TformMain
     Size.PlatformDefault = False
     StyleLookup = 'memostyle'
     TabOrder = 2
-    Viewport.Width = 626.000000000000000000
-    Viewport.Height = 249.000000000000000000
+    Viewport.Width = 640.000000000000000000
+    Viewport.Height = 257.000000000000000000
   end
   object StringGrid: TStringGrid
     Align = Top
@@ -65,8 +65,8 @@ object formMain: TformMain
     StyleLookup = 'gridstyle'
     TabOrder = 3
     RowCount = 10
-    Viewport.Width = 636.000000000000000000
-    Viewport.Height = 152.000000000000000000
+    Viewport.Width = 640.000000000000000000
+    Viewport.Height = 177.000000000000000000
   end
   object MainMenu: TMainMenu
     Left = 584
@@ -107,6 +107,12 @@ object formMain: TformMain
     object miHelp: TMenuItem
       StyleLookup = 'menuitemstyle'
       Text = '&Help'
+      object miAbout: TMenuItem
+        Action = dmComponent.actAbout
+        Locked = True
+        StyleLookup = 'menuitemstyle'
+        ImageIndex = -1
+      end
     end
   end
   object ToolBar1: TToolBar

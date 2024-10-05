@@ -28,6 +28,7 @@ type
     labSeparator: TLabel;
     SpeedButton1: TSpeedButton;
     ProgressBar: TProgressBar;
+    miAbout: TMenuItem;
   private
     { Private declarations }
   public

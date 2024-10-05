@@ -1,0 +1,19 @@
+program MICROMINE;
+
+uses
+  System.StartUpCopy,
+  FMX.Forms,
+  Main in 'Main.pas' {formMain},
+  Components in 'DataModule\Components.pas' {dmComponent: TDataModule},
+  ExportToFile in 'Unit\ExportToFile.pas',
+  About in 'Forms\About.pas' {Form1};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.CreateForm(TformMain, formMain);
+  Application.CreateForm(TdmComponent, dmComponent);
+  Application.CreateForm(TForm1, Form1);
+  Application.Run;
+end.

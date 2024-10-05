@@ -307,6 +307,10 @@
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <DCCReference Include="Unit\ExportToFile.pas"/>
+        <DCCReference Include="Forms\About.pas">
+            <Form>formAbout</Form>
+            <FormType>fmx</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

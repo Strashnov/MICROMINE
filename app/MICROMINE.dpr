@@ -5,7 +5,8 @@ uses
   FMX.Forms,
   Main in 'Main.pas' {formMain},
   Components in 'DataModule\Components.pas' {dmComponent: TDataModule},
-  ExportToFile in 'Unit\ExportToFile.pas';
+  ExportToFile in 'Unit\ExportToFile.pas',
+  About in 'Forms\About.pas' {formAbout};
 
 {$R *.res}
 
@@ -13,5 +14,6 @@ begin
   Application.Initialize;
   Application.CreateForm(TformMain, formMain);
   Application.CreateForm(TdmComponent, dmComponent);
+  Application.CreateForm(TformAbout, formAbout);
   Application.Run;
 end.
