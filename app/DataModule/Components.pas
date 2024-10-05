@@ -5,7 +5,7 @@ interface
 uses
   System.SysUtils, System.Classes, System.Actions, FMX.ActnList, FMX.Forms,
   FMX.Types, FMX.Dialogs, StrUtils, FMX.Grid.Style, FMX.Grid, FMX.Controls,
-  FMX.DialogService, System.UITypes;
+  FMX.DialogService, System.UITypes, FMX.Printer;
 
 type
   TdmComponent = class(TDataModule)
@@ -19,11 +19,14 @@ type
     actSaveToCSV: TAction;
     StyleBook: TStyleBook;
     actAbout: TAction;
+    PrintDialog: TPrintDialog;
+    actPrinter: TAction;
     procedure actCloseExecute(Sender: TObject);
     procedure actOpenFileExecute(Sender: TObject);
     procedure actSaveToCSVExecute(Sender: TObject);
     procedure actSaveToTXTExecute(Sender: TObject);
     procedure actAboutExecute(Sender: TObject);
+    procedure actPrinterExecute(Sender: TObject);
   private
     { Private declarations }
   public
@@ -38,7 +41,7 @@ implementation
 
 {%CLASSGROUP 'FMX.Controls.TControl'}
 
-uses Main, ExportToFile, About;
+uses Main, ExportToFile, About, Printer;
 {$R *.dfm}
 
 procedure TdmComponent.actAboutExecute(Sender: TObject);
@@ -53,63 +56,72 @@ end;
 
 procedure TdmComponent.actOpenFileExecute(Sender: TObject);
 var
-  MicromineFile: textfile;
-  s, NumberOfColumns, StringCopy: string;
-  Count, CountLinesFile, VariableToFile: integer;
-  CountColums, i: integer;
-  OneString, TwoString, ThreeString, FourString, FiveString: string;
+  List: TStringList;
+  Count, CountColums, IncArrayHeader, IncArrayValues: Integer;
+  Rows, Columns, i: Integer;
+  NumberOfColumns: string;
+  HeaderArrayBuf, ArrayValuseBuf: array of string;
 begin
-  Count := 0;
   if OpenDialog.Execute then
   begin
-    AssignFile(MicromineFile, OpenDialog.FileName);
-    Reset(MicromineFile);
-    Readln(MicromineFile, s);
-    formMain.Caption := Copy(s, 0, 37); // Загрузить первую строку
-{$REGION 'Находим переменную, возврат число в переменной и сколько строк в файле'}
-    while not(eof(MicromineFile)) do
-    begin
-      Inc(Count); // подсчет количество строк
-      Readln(MicromineFile, s);
-      for CountLinesFile := 0 to Count do
+    List := TStringList.Create;
+
+    try
+      List.LoadFromFile(OpenDialog.FileName);
+      Count := List.Count;
+      formMain.Caption := List.Strings[0];
+      NumberOfColumns := Trim(Copy(List.Strings[1], 4055, 4));
+      // Число переменных
+{$REGION 'We read the column names into the array'}
+      List.Move(0, List.Count - 1);
+      List.Move(0, List.Count - 1);
+      SetLength(HeaderArrayBuf, NumberOfColumns.ToInteger);
+      for IncArrayHeader := Low(HeaderArrayBuf) to High(HeaderArrayBuf) do
       begin
-        VariableToFile := pos('VARIABLES', s, 1);
-        if VariableToFile <> 0 then
-          NumberOfColumns := Copy(s, 4055, 2);
-        formMain.labExtensionFile.Text := NumberOfColumns; // Count.ToString; //
-        // Узнаем количество столбцов в нашем файле
+        HeaderArrayBuf[IncArrayHeader] :=
+          Copy(List.Strings[IncArrayHeader], 1, 10);
       end;
-    end;
+      List.Move(List.Count - 1, 0);
+      List.Move(List.Count - 1, 0);
+      // formMain.labExtensionFile.Text := NumberOfColumns;
 {$ENDREGION}
-{$REGION 'Create col'}
-    for CountColums := 0 to NumberOfColumns.ToInteger - 1 do
-    begin
-      // if CountLinesFile = 1 then
-      // begin
-      Readln(MicromineFile, s);
-      i := Length(s); // Подсчитаем количество символов в строке
-      StringCopy := Copy(s, 0, i); // Скопируем всю строку целиком
+{$REGION 'Work with grid'}
+      for CountColums := 0 to NumberOfColumns.ToInteger - 1 do
+      begin
+        formMain.StringGrid.AddObject(TStringColumn.Create(self));
+        // Создать колонку
+        formMain.StringGrid.RowCount := Count; // Количество строк
+        formMain.StringGrid.Columns[CountColums].Header :=
+          HeaderArrayBuf[CountColums];
+      end;
 
-      // Разбираем строку
-      OneString := Copy(StringCopy, 1, 10); // Коприуем имя до 10 символов
-      TwoString := Copy(StringCopy, 11, 3); // Копируем символ типа данных
-      ThreeString := Copy(StringCopy, 14, 3); // Копируем число до запятой
-      FourString := Copy(StringCopy, 17, 1); // Копируем остаток
-      FiveString := Trim(Copy(StringCopy, 19, 255)); // Копируем описание
-      // ShowMessage(OneString);
-
-      formMain.StringGrid.AddObject(TStringColumn.Create(self));
-      formMain.StringGrid.Columns[CountColums].Header := OneString;
-      // IntToStr(Random(100));
-      formMain.StringGrid.RowCount := 2;
-
-      formMain.ProgressBar.Value := CountColums;
+{$ENDREGION}
+{$REGION 'Values in grid'}
+      for Rows := 0 to formMain.StringGrid.RowCount - 1 do
+      begin
+        for Columns := 0 to formMain.StringGrid.ColumnCount - 1 do
+        begin
+          formMain.StringGrid.Cells[Columns, Rows] := IntToStr(Random(100));
+        end;
+      end
+{$ENDREGION}
+    finally
+      List.Clear;
     end;
-    // end;
-    // {$ENDREGION}
   end;
 
-  CloseFile(MicromineFile);
+end;
+
+procedure TdmComponent.actPrinterExecute(Sender: TObject); // Printer
+var
+  PrintingPage: TPrintingPage;
+begin
+  PrintingPage := TPrintingPage.Create;
+  try
+    PrintingPage.Start(PrintDialog, formMain.StringGrid);
+  finally
+    PrintingPage.Free;
+  end;
 end;
 
 procedure TdmComponent.actSaveToCSVExecute(Sender: TObject); // Export to CSV

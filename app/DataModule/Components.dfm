@@ -27,6 +27,11 @@ object dmComponent: TdmComponent
       ShortCut = 112
       OnExecute = actAboutExecute
     end
+    object actPrinter: TAction
+      Text = 'Printer'
+      ShortCut = 16464
+      OnExecute = actPrinterExecute
+    end
   end
   object OpenDialog: TOpenDialog
     Filter = 'Micromine|*.STR|Al file|*.*'
@@ -33585,5 +33590,9 @@ object dmComponent: TdmComponent
       end>
     Left = 264
     Top = 16
+  end
+  object PrintDialog: TPrintDialog
+    Left = 48
+    Top = 232
   end
 end

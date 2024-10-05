@@ -1,0 +1,48 @@
+unit Printer;
+
+interface
+
+uses
+  FMX.Dialogs, FMX.Grid, FMX.Printer
+{$IFDEF MSWINDOWS}
+  {,Vcl.Printers}
+{$ENDIF};
+
+Type
+  /// <summary>
+  /// Printer
+  /// </summary>
+  TPrintingPage = class sealed(TObject)
+  public
+    procedure Start(PrintDialog: TPrintDialog; Grid: TStringGrid);
+  end;
+
+implementation
+
+{ TPrintingPage }
+
+procedure TPrintingPage.Start(PrintDialog: TPrintDialog; Grid: TStringGrid);
+var
+  Rows, Columns: Integer;
+  Print: TPrinter;
+begin
+  if PrintDialog.Execute then
+  begin
+    Print := TPrinter.Create;
+    try
+      Print.BeginDoc;
+      for Rows := 0 to Grid.RowCount - 1 do
+      begin
+        for Columns := 0 to Grid.ColumnCount - 1 do
+          Grid.Cells[Columns, Rows];
+      end;
+      Print.EndDoc;
+    finally
+      Print.Free;
+    end;
+
+  end;
+
+end;
+
+end.

@@ -7,7 +7,7 @@ uses
   System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Menus,
   FMX.StdCtrls, FMX.Controls.Presentation, FMX.Memo.Types, FMX.ScrollBox,
-  FMX.Memo, System.Rtti, FMX.Grid.Style, FMX.Grid, FMX.Edit;
+  System.Rtti, FMX.Grid.Style, FMX.Grid, FMX.Edit;
 
 type
   TformMain = class(TForm)
@@ -18,17 +18,16 @@ type
     miOpen: TMenuItem;
     StatusBar: TStatusBar;
     labExtensionFile: TLabel;
-    memText: TMemo;
     StringGrid: TStringGrid;
     miExport: TMenuItem;
     miTxt: TMenuItem;
     miCsv: TMenuItem;
     edtSeparator: TEdit;
-    ToolBar1: TToolBar;
+    ToolBar: TToolBar;
     labSeparator: TLabel;
-    SpeedButton1: TSpeedButton;
-    ProgressBar: TProgressBar;
+    sbOpen: TSpeedButton;
     miAbout: TMenuItem;
+    miPrinter: TMenuItem;
   private
     { Private declarations }
   public
