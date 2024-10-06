@@ -92,37 +92,29 @@ begin
       begin
         formMain.StringGrid.AddObject(TStringColumn.Create(self));
         // Создать колонку
-        formMain.StringGrid.RowCount := Count; // Количество строк
+        formMain.StringGrid.RowCount := Count-(2+NumberOfColumns.ToInteger); // Количество строк
         formMain.StringGrid.Columns[CountColums].Header :=
           HeaderArrayBuf[CountColums];
       end;
 
 {$ENDREGION}
 {$REGION 'Values in grid'}
-      List.Move(0, List.Count - 1);
-      List.Move(0, List.Count - 1);
+      List.Move(0, List.Count - (2+NumberOfColumns.ToInteger));
+      List.Move(0, List.Count - (2+NumberOfColumns.ToInteger));
+
       for Rows := 0 to formMain.StringGrid.RowCount - 1 do
       begin
         for Columns := 0 to formMain.StringGrid.ColumnCount - 1 do
         begin
-          var
-           j,i:Integer;
-           var c, m:string;
-           var a:  array of string;
-           j:=Length(List.Strings[Rows]);
-           c:= Copy(List.Strings[Rows], 1, j);
 
-           SetLength(a, formMain.StringGrid.RowCount - 1);
 
-           a[0]:= Copy(List.Strings[Rows], 1, 21);
-           a[1]:= Copy(List.Strings[Rows], 51, 61);
 
-          formMain.StringGrid.Cells[Columns, Rows] := a[rows];
+
+          formMain.StringGrid.Cells[Columns, Rows] := Copy(List.Strings[Rows],1,10);
 
         end;
       end;
-      List.Move(List.Count - 1, 0);
-      List.Move(List.Count - 1, 0);
+
 {$ENDREGION}
     finally
       List.Free;

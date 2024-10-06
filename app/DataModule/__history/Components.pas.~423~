@@ -101,21 +101,33 @@ begin
 {$REGION 'Values in grid'}
       List.Move(0, List.Count - 1);
       List.Move(0, List.Count - 1);
+
       for Rows := 0 to formMain.StringGrid.RowCount - 1 do
       begin
         for Columns := 0 to formMain.StringGrid.ColumnCount - 1 do
         begin
+
           var
-            i: Integer;
+            j, i,t: Integer;
+          var
+            c, m: string;
           var
             a: array of string;
-          SetLength(a, formMain.StringGrid.RowCount - 1);
-          for i := 0 to formMain.StringGrid.RowCount - 1 do
-          begin
+          i := NumberOfColumns.ToInteger - 1;
+          inc(i);
+          j := Length(List.Strings[i]);
+          c := Copy(List.Strings[i], 1, j);
 
-            a[i] := Copy(List.Strings[3], 1, 26);
-          end;
-          formMain.StringGrid.Cells[Columns, Rows] := a[i];
+          SetLength(a, NumberOfColumns.ToInteger);
+
+          t:=0;
+          a[t] := Copy(c, 1, 21);
+          inc(t);
+          a[t] := Copy(c, 51, 61);
+          inc(t);
+          a[t] := Copy(c, 111, 115);
+
+          formMain.StringGrid.Cells[Columns, Rows] := a[t];
 
         end;
       end;
