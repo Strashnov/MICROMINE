@@ -29,6 +29,7 @@ type
     procedure actPrinterExecute(Sender: TObject);
   private
     { Private declarations }
+
   public
     { Public declarations }
 
@@ -57,10 +58,11 @@ end;
 procedure TdmComponent.actOpenFileExecute(Sender: TObject);
 var
   List: TStringList;
-  Count, CountColums, IncArrayHeader, IncArrayValues: Integer;
-  Rows, Columns, i: Integer;
+  Count, CountColums, IncArrayHeader: Integer;
+  Rows, Columns: Integer;
   NumberOfColumns: string;
-  HeaderArrayBuf, ArrayValuseBuf: array of string;
+  HeaderArrayBuf: array of string;
+  ArrayV: array [0 .. 30] of string;
 begin
   if OpenDialog.Execute then
   begin
@@ -97,16 +99,41 @@ begin
 
 {$ENDREGION}
 {$REGION 'Values in grid'}
+      List.Move(0, List.Count - 1);
+      List.Move(0, List.Count - 1);
+
+       
+
       for Rows := 0 to formMain.StringGrid.RowCount - 1 do
       begin
         for Columns := 0 to formMain.StringGrid.ColumnCount - 1 do
         begin
-          formMain.StringGrid.Cells[Columns, Rows] := IntToStr(Random(100));
+
+         var
+           j,i:Integer;
+           var c, m:string;
+           var a:  array of string;
+           i:=NumberOfColumns.ToInteger-1;
+           inc(i);
+           j:=Length(List.Strings[i]);
+           c:= Copy(List.Strings[i], 1, j);
+
+           SetLength(a, NumberOfColumns.ToInteger);
+
+           a[0]:= Copy(c, 1, 21);
+           a[1]:= Copy(c, 51, 61);
+           a[2]:= Copy(c, 111, 115);
+
+
+          formMain.StringGrid.Cells[Columns, Rows] := a[0];
+
         end;
-      end
+      end;
+      List.Move(List.Count - 1, 0);
+      List.Move(List.Count - 1, 0);
 {$ENDREGION}
     finally
-      List.Clear;
+      List.Free;
     end;
   end;
 

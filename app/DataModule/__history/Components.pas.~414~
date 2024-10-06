@@ -29,6 +29,7 @@ type
     procedure actPrinterExecute(Sender: TObject);
   private
     { Private declarations }
+
   public
     { Public declarations }
 
@@ -57,10 +58,11 @@ end;
 procedure TdmComponent.actOpenFileExecute(Sender: TObject);
 var
   List: TStringList;
-  Count, CountColums, IncArrayHeader, IncArrayValues: Integer;
-  Rows, Columns, i: Integer;
+  Count, CountColums, IncArrayHeader: Integer;
+  Rows, Columns: Integer;
   NumberOfColumns: string;
-  HeaderArrayBuf, ArrayValuseBuf: array of string;
+  HeaderArrayBuf: array of string;
+  ArrayV: array [0 .. 30] of string;
 begin
   if OpenDialog.Execute then
   begin
@@ -72,50 +74,49 @@ begin
       formMain.Caption := List.Strings[0];
       NumberOfColumns := Trim(Copy(List.Strings[1], 4055, 4));
       // Число переменных
-
+{$REGION 'We read the column names into the array'}
+      List.Move(0, List.Count - 1);
+      List.Move(0, List.Count - 1);
       SetLength(HeaderArrayBuf, NumberOfColumns.ToInteger);
       for IncArrayHeader := Low(HeaderArrayBuf) to High(HeaderArrayBuf) do
       begin
         HeaderArrayBuf[IncArrayHeader] :=
           Copy(List.Strings[IncArrayHeader], 1, 10);
       end;
-
-      formMain.labExtensionFile.Text := NumberOfColumns;
-
+      List.Move(List.Count - 1, 0);
+      List.Move(List.Count - 1, 0);
+      // formMain.labExtensionFile.Text := NumberOfColumns;
+{$ENDREGION}
 {$REGION 'Work with grid'}
-      // i := 1;
       for CountColums := 0 to NumberOfColumns.ToInteger - 1 do
       begin
         formMain.StringGrid.AddObject(TStringColumn.Create(self));
         // Создать колонку
         formMain.StringGrid.RowCount := Count; // Количество строк
-        // inc(i);
         formMain.StringGrid.Columns[CountColums].Header :=
           HeaderArrayBuf[CountColums];
       end;
 
 {$ENDREGION}
 {$REGION 'Values in grid'}
-      i := Count - NumberOfColumns.ToInteger;
-
-      SetLength(ArrayValuseBuf, i);
-      for IncArrayValues := Low(ArrayValuseBuf) to High(ArrayValuseBuf) do
-      begin
-        HeaderArrayBuf[IncArrayValues] :=
-          Copy(List.Strings[IncArrayValues], 1, 10);
-      end;
-
+      List.Move(0, List.Count - 1);
+      List.Move(0, List.Count - 1);
       for Rows := 0 to formMain.StringGrid.RowCount - 1 do
       begin
         for Columns := 0 to formMain.StringGrid.ColumnCount - 1 do
         begin
-          formMain.StringGrid.Cells[Columns, Rows] :=
-            HeaderArrayBuf[IncArrayValues];
+          var
+           l:Integer;
+           l:=Length(Copy(List.Strings[Rows], 1, 26));
+          formMain.StringGrid.Cells[Columns, Rows] := l.ToString;
+
         end;
-      end
+      end;
+      List.Move(List.Count - 1, 0);
+      List.Move(List.Count - 1, 0);
 {$ENDREGION}
     finally
-      List.Clear;
+      List.Free;
     end;
   end;
 
