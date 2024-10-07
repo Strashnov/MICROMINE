@@ -27,7 +27,6 @@ type
     labSeparator: TLabel;
     sbOpen: TSpeedButton;
     miAbout: TMenuItem;
-    miPrinter: TMenuItem;
   private
     { Private declarations }
   public

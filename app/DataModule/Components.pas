@@ -5,7 +5,7 @@ interface
 uses
   System.SysUtils, System.Classes, System.Actions, FMX.ActnList, FMX.Forms,
   FMX.Types, FMX.Dialogs, StrUtils, FMX.Grid.Style, FMX.Grid, FMX.Controls,
-  FMX.DialogService, System.UITypes, FMX.Printer;
+  FMX.DialogService, System.UITypes;
 
 type
   TdmComponent = class(TDataModule)
@@ -19,14 +19,11 @@ type
     actSaveToCSV: TAction;
     StyleBook: TStyleBook;
     actAbout: TAction;
-    PrintDialog: TPrintDialog;
-    actPrinter: TAction;
     procedure actCloseExecute(Sender: TObject);
     procedure actOpenFileExecute(Sender: TObject);
     procedure actSaveToCSVExecute(Sender: TObject);
     procedure actSaveToTXTExecute(Sender: TObject);
     procedure actAboutExecute(Sender: TObject);
-    procedure actPrinterExecute(Sender: TObject);
   private
     { Private declarations }
 
@@ -42,7 +39,7 @@ implementation
 
 {%CLASSGROUP 'FMX.Controls.TControl'}
 
-uses Main, ExportToFile, About, Printer;
+uses Main, ExportToFile, About;
 {$R *.dfm}
 
 procedure TdmComponent.actAboutExecute(Sender: TObject);
@@ -120,18 +117,6 @@ begin
     end;
   end;
 
-end;
-
-procedure TdmComponent.actPrinterExecute(Sender: TObject); // Printer
-var
-  PrintingPage: TPrintingPage;
-begin
-  PrintingPage := TPrintingPage.Create;
-  try
-    PrintingPage.Start(PrintDialog, formMain.StringGrid);
-  finally
-    PrintingPage.Free;
-  end;
 end;
 
 procedure TdmComponent.actSaveToCSVExecute(Sender: TObject); // Export to CSV

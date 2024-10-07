@@ -6,8 +6,7 @@ uses
   Main in 'Main.pas' {formMain},
   Components in 'DataModule\Components.pas' {dmComponent: TDataModule},
   ExportToFile in 'Unit\ExportToFile.pas',
-  About in 'Forms\About.pas' {formAbout},
-  Printer in 'Unit\Printer.pas';
+  About in 'Forms\About.pas' {formAbout};
 
 {$R *.res}
 

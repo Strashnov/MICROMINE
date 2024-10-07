@@ -311,7 +311,6 @@
             <Form>formAbout</Form>
             <FormType>fmx</FormType>
         </DCCReference>
-        <DCCReference Include="Unit\Printer.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
