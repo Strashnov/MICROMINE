@@ -17,18 +17,17 @@ object formMain: TformMain
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
-    object labExtensionFile: TLabel
+    object labNumberOfLines: TLabel
       Align = MostLeft
       AutoSize = True
       Margins.Left = 5.000000000000000000
       Position.X = 5.000000000000000000
-      Size.Width = 85.000000000000000000
+      Size.Width = 0.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'labelstyle'
       TextSettings.WordWrap = False
       TextSettings.Trimming = None
-      Text = 'labExtensionFile'
       TabOrder = 0
     end
   end

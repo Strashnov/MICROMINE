@@ -44,7 +44,7 @@ uses Main, ExportToFile, About;
 
 procedure TdmComponent.actAboutExecute(Sender: TObject);
 begin
-  formAbout.ShowModal;
+  formAbout.ShowModal; // Open form about
 end;
 
 procedure TdmComponent.actCloseExecute(Sender: TObject);
@@ -55,10 +55,11 @@ end;
 procedure TdmComponent.actOpenFileExecute(Sender: TObject);
 var
   List: TStringList;
-  Count, CountColums, IncArrayHeader: Integer;
-  Rows, RowsInNotVisible: Integer;
-  NumberOfColumns: string;
+  Count, Rows, Columns, CountColums, IncArrayHeader, IncArrayValues,
+    RowsInNotVisible, StringLenght: Integer;
+  NumberOfColumns, StringOne, StringTwo: string;
   HeaderArrayBuf: array of string;
+  StartToCopy, StopToCopy: array of Integer;
 begin
   if OpenDialog.Execute then
   begin
@@ -66,79 +67,60 @@ begin
     try
       List.LoadFromFile(OpenDialog.FileName);
       Count := List.Count;
-      formMain.Caption := List.Strings[0];
-      NumberOfColumns := Trim(Copy(List.Strings[1], 4055, 4));
-      // Число переменных
-{$REGION 'We read the column names into the array'}
+      formMain.labNumberOfLines.Text := 'Rows: ' + IntToStr(Count - 2);
+      formMain.Caption := List.Strings[0]; // Micromine
+      NumberOfColumns := Trim(Copy(List.Strings[1], 4055, 4)); // Variable
+{$REGION 'Read the column names into the array'}
+      List.Move(0, List.Count - 1); // Shift down two positions
       List.Move(0, List.Count - 1);
-      List.Move(0, List.Count - 1);
+      // Name columns head
       SetLength(HeaderArrayBuf, NumberOfColumns.ToInteger);
       for IncArrayHeader := Low(HeaderArrayBuf) to High(HeaderArrayBuf) do
       begin
         HeaderArrayBuf[IncArrayHeader] :=
           Copy(List.Strings[IncArrayHeader], 1, 10);
       end;
-      List.Move(List.Count - 1, 0);
+      // The number of characters in the variable
+      SetLength(StopToCopy, NumberOfColumns.ToInteger);
+      for IncArrayValues := Low(StopToCopy) to High(StopToCopy) do
+      begin
+        StopToCopy[IncArrayValues] :=
+          Trim(Copy(List.Strings[IncArrayValues], 13, 3)).ToInteger;
+      end;
+      List.Move(List.Count - 1, 0); // Shift is two positions up
       List.Move(List.Count - 1, 0);
       // formMain.labExtensionFile.Text := NumberOfColumns;
 {$ENDREGION}
-{$REGION 'Work with grid'}
+{$REGION 'Create columns and rows'}
       for CountColums := 0 to NumberOfColumns.ToInteger - 1 do
       begin
         formMain.StringGrid.AddObject(TStringColumn.Create(self));
-        // Создать колонку
+        // Create columns
         formMain.StringGrid.RowCount := Count - (2 + NumberOfColumns.ToInteger);
-        // Количество строк
+        // Number of lines
         formMain.StringGrid.Columns[CountColums].Header :=
           HeaderArrayBuf[CountColums];
       end;
 
 {$ENDREGION}
-{$REGION 'Values in grid'}
+{$REGION 'Shift positions for values'}
       for RowsInNotVisible := 1 to (2 + NumberOfColumns.ToInteger) do
         List.Move(0, List.Count - 1);
-      var
-        StringLenght: Integer;
-      var
-        StringOne, StringTwo: string;
-      var
-        i, Columns: Integer;
-      var
-        a: array [0 .. 18] of Integer;
-      var
-        b: array [0 .. 18] of Integer;
 
-      a[0] := 1;
-      a[1] := 9;
-      a[2] := 17;
-      a[3] := 25;
-      a[4] := 51;
-      a[5] := 141;
-      a[6] := 147;
-
-      b[0] := 7;
-      b[1] := 7;
-      b[2] := 7;
-      b[3] := 6;
-      b[4] := 60;
-      b[5] := 143;
-      b[6] := 151;
-
+{$ENDREGION}
+{$REGION 'Inser values to StrinGrid'}
       for Rows := 0 to formMain.StringGrid.RowCount - 1 do
       begin
         StringLenght := Length(List.Strings[Rows]);
-        // Подститываем количество символов в строке
-
         StringOne := Copy(List.Strings[Rows], 1, StringLenght);
-        // Выделяем строку целиком
-
+        IncArrayValues := 1;
         for Columns := 0 to formMain.StringGrid.ColumnCount - 1 do
         begin
-          StringTwo := Copy(StringOne, a[Columns], b[Columns]);
+          StringTwo := Copy(StringOne, IncArrayValues, StopToCopy[Columns]);
           formMain.StringGrid.Cells[Columns, Rows] := StringTwo;
+          IncArrayValues := IncArrayValues + StopToCopy[Columns];
         end;
       end;
-
 {$ENDREGION}
     finally
       List.Free;

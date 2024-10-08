@@ -17,7 +17,7 @@ type
     miClose: TMenuItem;
     miOpen: TMenuItem;
     StatusBar: TStatusBar;
-    labExtensionFile: TLabel;
+    labNumberOfLines: TLabel;
     StringGrid: TStringGrid;
     miExport: TMenuItem;
     miTxt: TMenuItem;
