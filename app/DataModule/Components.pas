@@ -56,10 +56,9 @@ procedure TdmComponent.actOpenFileExecute(Sender: TObject);
 var
   List: TStringList;
   Count, CountColums, IncArrayHeader: Integer;
-  Rows, Columns, RowsInNotVisible: Integer;
+  Rows, RowsInNotVisible: Integer;
   NumberOfColumns: string;
   HeaderArrayBuf: array of string;
-  ArrayV: array [0 .. 30] of string;
 begin
   if OpenDialog.Execute then
   begin
@@ -96,18 +95,47 @@ begin
 
 {$ENDREGION}
 {$REGION 'Values in grid'}
-{$REGION 'Hiding the extra lines'}
       for RowsInNotVisible := 1 to (2 + NumberOfColumns.ToInteger) do
         List.Move(0, List.Count - 1);
-{$ENDREGION}
+      var
+        StringLenght: Integer;
+      var
+        StringOne, StringTwo: string;
+      var
+        i, Columns: Integer;
+      var
+        a: array [0 .. 18] of Integer;
+      var
+        b: array [0 .. 18] of Integer;
+
+      a[0] := 1;
+      a[1] := 9;
+      a[2] := 17;
+      a[3] := 25;
+      a[4] := 51;
+      a[5] := 141;
+      a[6] := 147;
+
+      b[0] := 7;
+      b[1] := 7;
+      b[2] := 7;
+      b[3] := 6;
+      b[4] := 60;
+      b[5] := 143;
+      b[6] := 151;
+
       for Rows := 0 to formMain.StringGrid.RowCount - 1 do
       begin
+        StringLenght := Length(List.Strings[Rows]);
+        // Подститываем количество символов в строке
+
+        StringOne := Copy(List.Strings[Rows], 1, StringLenght);
+        // Выделяем строку целиком
+
         for Columns := 0 to formMain.StringGrid.ColumnCount - 1 do
         begin
-
-          formMain.StringGrid.Cells[Columns, Rows] :=
-            Copy(List.Strings[Rows], 1, 10);
-
+          StringTwo := Copy(StringOne, a[Columns], b[Columns]);
+          formMain.StringGrid.Cells[Columns, Rows] := StringTwo;
         end;
       end;
 

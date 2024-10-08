@@ -5,7 +5,7 @@ interface
 uses
   System.SysUtils, System.Classes, System.Actions, FMX.ActnList, FMX.Forms,
   FMX.Types, FMX.Dialogs, StrUtils, FMX.Grid.Style, FMX.Grid, FMX.Controls,
-  FMX.DialogService, System.UITypes, FMX.Printer;
+  FMX.DialogService, System.UITypes;
 
 type
   TdmComponent = class(TDataModule)
@@ -19,14 +19,11 @@ type
     actSaveToCSV: TAction;
     StyleBook: TStyleBook;
     actAbout: TAction;
-    PrintDialog: TPrintDialog;
-    actPrinter: TAction;
     procedure actCloseExecute(Sender: TObject);
     procedure actOpenFileExecute(Sender: TObject);
     procedure actSaveToCSVExecute(Sender: TObject);
     procedure actSaveToTXTExecute(Sender: TObject);
     procedure actAboutExecute(Sender: TObject);
-    procedure actPrinterExecute(Sender: TObject);
   private
     { Private declarations }
 
@@ -42,7 +39,7 @@ implementation
 
 {%CLASSGROUP 'FMX.Controls.TControl'}
 
-uses Main, ExportToFile, About, Printer;
+uses Main, ExportToFile, About;
 {$R *.dfm}
 
 procedure TdmComponent.actAboutExecute(Sender: TObject);
@@ -59,15 +56,13 @@ procedure TdmComponent.actOpenFileExecute(Sender: TObject);
 var
   List: TStringList;
   Count, CountColums, IncArrayHeader: Integer;
-  Rows, Columns: Integer;
+  Rows, RowsInNotVisible: Integer;
   NumberOfColumns: string;
   HeaderArrayBuf: array of string;
-  ArrayV: array [0 .. 30] of string;
 begin
   if OpenDialog.Execute then
   begin
     List := TStringList.Create;
-
     try
       List.LoadFromFile(OpenDialog.FileName);
       Count := List.Count;
@@ -92,63 +87,64 @@ begin
       begin
         formMain.StringGrid.AddObject(TStringColumn.Create(self));
         // Создать колонку
-        formMain.StringGrid.RowCount := Count; // Количество строк
+        formMain.StringGrid.RowCount := Count - (2 + NumberOfColumns.ToInteger);
+        // Количество строк
         formMain.StringGrid.Columns[CountColums].Header :=
           HeaderArrayBuf[CountColums];
       end;
 
 {$ENDREGION}
 {$REGION 'Values in grid'}
-      List.Move(0, List.Count - 1);
-      List.Move(0, List.Count - 1);
+      for RowsInNotVisible := 1 to (2 + NumberOfColumns.ToInteger) do
+        List.Move(0, List.Count - 1);
+          var StringLenght:integer;
 
-       
+
+
+
+      var i,Columns:integer;
+      var a, b:array[0..18] of integer;
+
+      
+
 
       for Rows := 0 to formMain.StringGrid.RowCount - 1 do
       begin
-        for Columns := 0 to formMain.StringGrid.ColumnCount - 1 do
+       StringLenght:= Length(List.Strings[Rows]); //Подститываем количество символов в строке
+
+       var StringOne,StringTwo:string;
+       StringOne:=Copy(List.Strings[rows], 1, StringLenght);//Выделяем строку целиком
+
+//      SetLength(a, NumberOfColumns.ToInteger);
+//      SetLength(b, NumberOfColumns.ToInteger);
+      for I := 0 to 18 do
+      begin
+       a[I] :=Copy(List.Strings[I], 13, 15).ToInteger;
+       b[I] :=Copy(List.Strings[I], 17, 18).ToInteger;
+      end;
+
+       StringTwo:=Copy(StringOne, a[1], b[1]);
+
+        for Columns := 0 to formMain.StringGrid.ColumnCount-1 do
         begin
 
-         var
-           j,i:Integer;
-           var c, m:string;
-           var a:  array of string;
-           i:=NumberOfColumns.ToInteger-1;
-           inc(i);
-           j:=Length(List.Strings[i]);
-           c:= Copy(List.Strings[i], 1, j);
-
-           SetLength(a, NumberOfColumns.ToInteger);
-
-           a[0]:= Copy(c, 1, 21);
-           a[1]:= Copy(c, 51, 61);
-           a[2]:= Copy(c, 111, 115);
-
-
-          formMain.StringGrid.Cells[Columns, Rows] := a[0];
-
+           formMain.StringGrid.Cells[Columns, Rows] :=StringTwo;
+           //formMain.StringGrid.Cells[1, Rows] :=Copy(List.Strings[rows], 9, 7);
+          // formMain.StringGrid.Cells[2, Rows] :=Copy(List.Strings[rows], 17, 7);
+          // formMain.StringGrid.Cells[3, Rows] :=Copy(List.Strings[rows], 25, 6);
+          // formMain.StringGrid.Cells[4, Rows] :='пробел';
+//           formMain.StringGrid.Cells[5, Rows] :=Copy(List.Strings[rows], 51, 60);
+           //formMain.StringGrid.Cells[6, Rows] :='пробел';
+//           formMain.StringGrid.Cells[7, Rows] :=Copy(List.Strings[rows], 141, 143);
+//           formMain.StringGrid.Cells[8, Rows] :=Copy(List.Strings[rows], 147, 151);
+          end;
         end;
-      end;
-      List.Move(List.Count - 1, 0);
-      List.Move(List.Count - 1, 0);
 {$ENDREGION}
     finally
       List.Free;
     end;
   end;
 
-end;
-
-procedure TdmComponent.actPrinterExecute(Sender: TObject); // Printer
-var
-  PrintingPage: TPrintingPage;
-begin
-  PrintingPage := TPrintingPage.Create;
-  try
-    PrintingPage.Start(PrintDialog, formMain.StringGrid);
-  finally
-    PrintingPage.Free;
-  end;
 end;
 
 procedure TdmComponent.actSaveToCSVExecute(Sender: TObject); // Export to CSV

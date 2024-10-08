@@ -5,7 +5,7 @@ interface
 uses
   System.SysUtils, System.Classes, System.Actions, FMX.ActnList, FMX.Forms,
   FMX.Types, FMX.Dialogs, StrUtils, FMX.Grid.Style, FMX.Grid, FMX.Controls,
-  FMX.DialogService, System.UITypes, FMX.Printer;
+  FMX.DialogService, System.UITypes;
 
 type
   TdmComponent = class(TDataModule)
@@ -19,14 +19,11 @@ type
     actSaveToCSV: TAction;
     StyleBook: TStyleBook;
     actAbout: TAction;
-    PrintDialog: TPrintDialog;
-    actPrinter: TAction;
     procedure actCloseExecute(Sender: TObject);
     procedure actOpenFileExecute(Sender: TObject);
     procedure actSaveToCSVExecute(Sender: TObject);
     procedure actSaveToTXTExecute(Sender: TObject);
     procedure actAboutExecute(Sender: TObject);
-    procedure actPrinterExecute(Sender: TObject);
   private
     { Private declarations }
 
@@ -42,7 +39,7 @@ implementation
 
 {%CLASSGROUP 'FMX.Controls.TControl'}
 
-uses Main, ExportToFile, About, Printer;
+uses Main, ExportToFile, About;
 {$R *.dfm}
 
 procedure TdmComponent.actAboutExecute(Sender: TObject);
@@ -59,15 +56,13 @@ procedure TdmComponent.actOpenFileExecute(Sender: TObject);
 var
   List: TStringList;
   Count, CountColums, IncArrayHeader: Integer;
-  Rows, Columns, RowsInNotVisible: Integer;
+  Rows, RowsInNotVisible: Integer;
   NumberOfColumns: string;
   HeaderArrayBuf: array of string;
-  ArrayV: array [0 .. 30] of string;
 begin
   if OpenDialog.Execute then
   begin
     List := TStringList.Create;
-
     try
       List.LoadFromFile(OpenDialog.FileName);
       Count := List.Count;
@@ -100,20 +95,50 @@ begin
 
 {$ENDREGION}
 {$REGION 'Values in grid'}
-{$REGION 'Hiding the extra lines'}
       for RowsInNotVisible := 1 to (2 + NumberOfColumns.ToInteger) do
         List.Move(0, List.Count - 1);
-{$ENDREGION}
+          var StringLenght:integer;
+
+
+
+
+      var i,Columns:integer;
+      var a:array[0..18] of integer;
+      var b:array[0..18] of integer;
+      a[0]:=1;
+      a[1]:=9;
+      a[2]:=17;
+      a[3]:=25;
+      b[0]:=7;
+      b[1]:=7;
+      b[2]:=7;
+      b[3]:=6;
+
       for Rows := 0 to formMain.StringGrid.RowCount - 1 do
       begin
-        for Columns := 0 to formMain.StringGrid.ColumnCount - 1 do
+       StringLenght:= Length(List.Strings[Rows]); //Подститываем количество символов в строке
+
+       var StringOne,StringTwo:string;
+       StringOne:=Copy(List.Strings[Rows], 1, StringLenght);//Выделяем строку целиком
+
+
+       StringTwo:=Copy(StringOne, a[1], b[2]);
+
+        for Columns := 0 to formMain.StringGrid.ColumnCount-1 do
         begin
-
-          formMain.StringGrid.Cells[Columns, Rows] :=
-            Copy(List.Strings[Rows], 1, 10);
-
+           formMain.StringGrid.Cells[Columns, Rows] :=StringTwo;
+           //formMain.StringGrid.Cells[1, Rows] :=Copy(List.Strings[rows], 9, 7);
+          // formMain.StringGrid.Cells[2, Rows] :=Copy(List.Strings[rows], 17, 7);
+          // formMain.StringGrid.Cells[3, Rows] :=Copy(List.Strings[rows], 25, 6);
+          // formMain.StringGrid.Cells[4, Rows] :='пробел';
+//           formMain.StringGrid.Cells[5, Rows] :=Copy(List.Strings[rows], 51, 60);
+           //formMain.StringGrid.Cells[6, Rows] :='пробел';
+//           formMain.StringGrid.Cells[7, Rows] :=Copy(List.Strings[rows], 141, 143);
+//           formMain.StringGrid.Cells[8, Rows] :=Copy(List.Strings[rows], 147, 151);
+          end;
         end;
-      end;
+
+
 
 {$ENDREGION}
     finally
@@ -121,18 +146,6 @@ begin
     end;
   end;
 
-end;
-
-procedure TdmComponent.actPrinterExecute(Sender: TObject); // Printer
-var
-  PrintingPage: TPrintingPage;
-begin
-  PrintingPage := TPrintingPage.Create;
-  try
-    PrintingPage.Start(PrintDialog, formMain.StringGrid);
-  finally
-    PrintingPage.Free;
-  end;
 end;
 
 procedure TdmComponent.actSaveToCSVExecute(Sender: TObject); // Export to CSV
