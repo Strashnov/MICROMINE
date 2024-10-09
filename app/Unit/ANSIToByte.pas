@@ -1,0 +1,45 @@
+unit ANSIToByte;
+
+interface
+
+uses System.SysUtils;
+
+Type
+  /// <summary>
+  /// Convert ANSI to byte
+  /// </summary>
+  TANSIToByte = class(TObject)
+  private
+    FResultString: string;
+    procedure SetResultString(const Value: string);
+  public
+    procedure ByteTo(TextValues: String);
+    property ResultString: string read FResultString write SetResultString;
+  end;
+
+implementation
+
+{ TANSTToByte }
+
+procedure TANSIToByte.ByteTo(TextValues: String);
+var
+  Buffer: TBytes;
+  IncBuffer: Byte;
+begin
+  SetLength(Buffer, Length(TextValues));
+  Buffer := TEncoding.ANSI.GetBytes(TextValues);
+  TextValues := TextValues.Empty;
+  for IncBuffer := Low(Buffer) to High(Buffer) do
+  begin
+    TextValues := TextValues + Buffer[IncBuffer].ToString;
+    SetResultString(TextValues);
+  end;
+
+end;
+
+procedure TANSIToByte.SetResultString(const Value: string);
+begin
+  FResultString := Value;
+end;
+
+end.

@@ -39,7 +39,7 @@ implementation
 
 {%CLASSGROUP 'FMX.Controls.TControl'}
 
-uses Main, ExportToFile, About;
+uses Main, ExportToFile, About, ANSIToByte;
 {$R *.dfm}
 
 procedure TdmComponent.actAboutExecute(Sender: TObject);
@@ -60,6 +60,8 @@ var
   NumberOfColumns, StringOne, StringTwo: string;
   HeaderArrayBuf: array of string;
   StartToCopy, StopToCopy: array of Integer;
+  Encoding: TEncoding;
+  ANSIToByte: TANSIToByte;
 begin
   if OpenDialog.Execute then
   begin
@@ -113,12 +115,29 @@ begin
       begin
         StringLenght := Length(List.Strings[Rows]);
         StringOne := Copy(List.Strings[Rows], 1, StringLenght);
+
         IncArrayValues := 1;
         for Columns := 0 to formMain.StringGrid.ColumnCount - 1 do
         begin
           StringTwo := Copy(StringOne, IncArrayValues, StopToCopy[Columns]);
-          formMain.StringGrid.Cells[Columns, Rows] := StringTwo;
-          IncArrayValues := IncArrayValues + StopToCopy[Columns];
+          if Length(StringTwo) >= StopToCopy[Columns] then
+          begin
+            ANSIToByte := TANSIToByte.Create;
+            try
+              ANSIToByte.ByteTo(StringTwo);
+              formMain.StringGrid.Cells[Columns, Rows] := ANSIToByte.ResultString;
+              IncArrayValues := IncArrayValues + StopToCopy[Columns];
+            finally
+              ANSIToByte.Free;
+            end;
+
+          end
+          else
+          begin
+            // StringTwo:=StringTwo+'55555';
+            formMain.StringGrid.Cells[Columns, Rows] := StringTwo;
+            IncArrayValues := IncArrayValues + StopToCopy[Columns];
+          end;
         end;
       end;
 {$ENDREGION}
