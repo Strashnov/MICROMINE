@@ -66,7 +66,7 @@ begin
           begin
             if Columns > 0 then
               Write(FFile, Seporator.Text);
-            Write(FFile, Grid.Cells[Columns, Rows]);
+            Write(FFile, Trim(Grid.Cells[Columns, Rows]));
           end;
           Writeln(FFile);
         end;

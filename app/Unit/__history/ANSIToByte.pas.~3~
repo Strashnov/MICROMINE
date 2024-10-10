@@ -1,0 +1,57 @@
+// -----------------------------------------------------------------------------
+// ru-RU
+// ѕреобразует ANSI в восьмеричную систему
+//
+// en-EN
+// Converts ANSI to an octal system
+//
+// Version 1.0.0
+// The year the module was created 09.10.2024
+// -----------------------------------------------------------------------------
+// ------------------------------------------------------- author Strashnov Igor
+// -----------------------------------------------------------------------------
+unit ANSIToByte;
+
+interface
+
+uses System.SysUtils;
+
+Type
+  /// <summary>
+  /// Convert ANSI to byte
+  /// </summary>
+  TANSIToByte = class sealed(TObject)
+  private
+    FResultString: string;
+    procedure SetResultString(const Value: string);
+  public
+    procedure ByteTo(TextValues: String);
+    property ResultString: string read FResultString write SetResultString;
+  end;
+
+implementation
+
+{ TANSTToByte }
+
+procedure TANSIToByte.ByteTo(TextValues: String);
+var
+  Buffer: TBytes;
+  IncBuffer: Byte;
+begin
+  SetLength(Buffer, Length(TextValues));
+  Buffer := TEncoding.ANSI.GetBytes(TextValues);
+  TextValues := TextValues.Empty;
+  for IncBuffer := Low(Buffer) to High(Buffer) do
+  begin
+    TextValues := TextValues + Buffer[IncBuffer].ToString;
+    SetResultString(TextValues);
+  end;
+
+end;
+
+procedure TANSIToByte.SetResultString(const Value: string);
+begin
+  FResultString := Value;
+end;
+
+end.
