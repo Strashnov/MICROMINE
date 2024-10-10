@@ -39,7 +39,7 @@ implementation
 
 {%CLASSGROUP 'FMX.Controls.TControl'}
 
-uses Main, ExportToFile, About;
+uses Main, ExportToFile, About, ANSIToByte;
 {$R *.dfm}
 
 procedure TdmComponent.actAboutExecute(Sender: TObject);
@@ -56,11 +56,13 @@ procedure TdmComponent.actOpenFileExecute(Sender: TObject);
 var
   List: TStringList;
   Count, Rows, Columns, CountColums, IncArrayHeader, IncArrayValues,
-    RowsInNotVisible, StringLenght: Integer;
+    incArrayType, RowsInNotVisible, StringLenght: Integer;
+  ArrayType: array of string;
   NumberOfColumns, StringOne, StringTwo: string;
   HeaderArrayBuf: array of string;
   StartToCopy, StopToCopy: array of Integer;
   Encoding: TEncoding;
+  ANSIToByte: TANSIToByte;
 begin
   if OpenDialog.Execute then
   begin
@@ -87,6 +89,13 @@ begin
       begin
         StopToCopy[IncArrayValues] :=
           Trim(Copy(List.Strings[IncArrayValues], 13, 3)).ToInteger;
+
+        SetLength(ArrayType, NumberOfColumns.ToInteger);
+        for incArrayType := Low(ArrayType) to High(ArrayType) do
+        begin
+          ArrayType[incArrayType] :=
+            Trim(Copy(List.Strings[incArrayType], 11, 1));
+        end;
       end;
       List.Move(List.Count - 1, 0); // Shift is two positions up
       List.Move(List.Count - 1, 0);
@@ -119,22 +128,26 @@ begin
         for Columns := 0 to formMain.StringGrid.ColumnCount - 1 do
         begin
           StringTwo := Copy(StringOne, IncArrayValues, StopToCopy[Columns]);
-          if Length(StringTwo) >= StopToCopy[Columns] then
+          if Length(StringTwo) >= StopToCopy[Columns]  then
           begin
-          var stream:TStringStream;
-           stream:=TStringStream.Create;
-            Encoding:=TUTF8Encoding.Create;
-             stream.WriteString(StringTwo);
-             List.SaveToStream(stream, Encoding);
-            formMain.StringGrid.Cells[Columns, Rows] :=List.LoadFromStream(stream, Encoding);
-            IncArrayValues := IncArrayValues + StopToCopy[Columns];
-            Encoding.Free;
-            stream.Free;
+
+//            ANSIToByte := TANSIToByte.Create;
+//            try
+             // ANSIToByte.ByteTo(StringTwo);
+              formMain.StringGrid.Cells[Columns, Rows] := StringTwo;
+//                ANSIToByte.ResultString;
+              IncArrayValues := IncArrayValues + StopToCopy[Columns];
+//            finally
+//              ANSIToByte.Free;
+//            end;
+
           end
           else
           begin
-//             StringTwo:=StringTwo+'55555';
-             formMain.StringGrid.Cells[Columns, Rows] := StringTwo;
+
+            StringTwo:=StringTwo+List.LineBreak;
+
+            formMain.StringGrid.Cells[Columns, Rows] := StringTwo;
             IncArrayValues := IncArrayValues + StopToCopy[Columns];
           end;
         end;

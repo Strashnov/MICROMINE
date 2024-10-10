@@ -17,56 +17,32 @@ object formMain: TformMain
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
-    object labExtensionFile: TLabel
+    object labNumberOfLines: TLabel
       Align = MostLeft
       AutoSize = True
       Margins.Left = 5.000000000000000000
       Position.X = 5.000000000000000000
-      Size.Width = 85.000000000000000000
+      Size.Width = 0.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'labelstyle'
       TextSettings.WordWrap = False
       TextSettings.Trimming = None
-      Text = 'labExtensionFile'
       TabOrder = 0
     end
-    object ProgressBar: TProgressBar
-      Align = Left
-      Max = 17.000000000000000000
-      Orientation = Horizontal
-      Position.X = 90.000000000000000000
-      Size.Width = 100.000000000000000000
-      Size.Height = 22.000000000000000000
-      Size.PlatformDefault = False
-      StyleLookup = 'progressbarstyle'
-    end
-  end
-  object memText: TMemo
-    Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
-    DataDetectorTypes = []
-    Align = Client
-    Size.Width = 640.000000000000000000
-    Size.Height = 257.000000000000000000
-    Size.PlatformDefault = False
-    StyleLookup = 'memostyle'
-    TabOrder = 2
-    Viewport.Width = 626.000000000000000000
-    Viewport.Height = 249.000000000000000000
   end
   object StringGrid: TStringGrid
-    Align = Top
+    Align = Client
     CanFocus = True
     ClipChildren = True
-    Position.Y = 24.000000000000000000
     Size.Width = 640.000000000000000000
-    Size.Height = 177.000000000000000000
+    Size.Height = 434.000000000000000000
     Size.PlatformDefault = False
     StyleLookup = 'gridstyle'
-    TabOrder = 3
+    TabOrder = 2
     RowCount = 10
     Viewport.Width = 636.000000000000000000
-    Viewport.Height = 152.000000000000000000
+    Viewport.Height = 409.000000000000000000
   end
   object MainMenu: TMainMenu
     Left = 584
@@ -76,12 +52,6 @@ object formMain: TformMain
       Text = '&File'
       object miOpen: TMenuItem
         Action = dmComponent.actOpenFile
-        Locked = True
-        StyleLookup = 'menuitemstyle'
-        ImageIndex = -1
-      end
-      object miPrinter: TMenuItem
-        Action = dmComponent.actPrinter
         Locked = True
         StyleLookup = 'menuitemstyle'
         ImageIndex = -1
@@ -121,12 +91,12 @@ object formMain: TformMain
       end
     end
   end
-  object ToolBar1: TToolBar
+  object ToolBar: TToolBar
     Align = MostTop
     Size.Width = 640.000000000000000000
     Size.Height = 24.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 5
+    TabOrder = 4
     object edtSeparator: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
       Align = MostRight
@@ -163,7 +133,7 @@ object formMain: TformMain
       Text = 'Separator'
       TabOrder = 1
     end
-    object SpeedButton1: TSpeedButton
+    object sbOpen: TSpeedButton
       Action = dmComponent.actOpenFile
       Align = Left
       ImageIndex = -1
