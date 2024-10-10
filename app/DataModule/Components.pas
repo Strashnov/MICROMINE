@@ -158,9 +158,6 @@ begin
           end
           else
           begin
-
-            // StringTwo:=StringReplace(StringTwo, List.LineBreak, '5555', [rfReplaceAll]);
-
             formMain.StringGrid.Cells[Columns, Rows] := StringTwo;
             IncArrayValues := IncArrayValues + StopToCopy[Columns];
           end;

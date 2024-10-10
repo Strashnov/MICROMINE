@@ -1,15 +1,3 @@
-// -----------------------------------------------------------------------------
-// ru-RU
-// ѕреобразует ANSI в восьмеричную систему
-//
-// en-EN
-// Converts ANSI to an octal system
-//
-// Version 1.0.0
-// The year the module was created 09.10.2024
-// -----------------------------------------------------------------------------
-// ------------------------------------------------------- author Strashnov Igor
-// -----------------------------------------------------------------------------
 unit ANSIToByte;
 
 interface
@@ -20,7 +8,7 @@ Type
   /// <summary>
   /// Convert ANSI to byte
   /// </summary>
-  TANSIToByte = class sealed(TObject)
+  TANSIToByte = class(TObject)
   private
     FResultString: string;
     procedure SetResultString(const Value: string);
