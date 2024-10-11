@@ -63,12 +63,18 @@ var
   StartToCopy, StopToCopy: array of Integer;
   Encoding: TEncoding;
   ANSIToByte: TANSIToByte;
+var
+  i: Integer;
 begin
   if OpenDialog.Execute then
   begin
     List := TStringList.Create;
     try
       List.LoadFromFile(OpenDialog.FileName);
+
+//      for i := 0 to Count do
+//        if List.Strings[i] = '^J' then
+//          List.Strings[i].Replace('^J', '');
       Count := List.Count;
       formMain.labNumberOfLines.Text := 'Rows: ' + IntToStr(Count - 2);
       formMain.Caption := List.Strings[0]; // Micromine
