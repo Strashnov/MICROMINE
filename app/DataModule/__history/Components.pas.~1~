@@ -71,7 +71,7 @@ begin
     List := TStringList.Create;
     try
       List.LoadFromFile(OpenDialog.FileName);
-//
+
 //      for i := 0 to Count do
 //        if List.Strings[i] = '^J' then
 //          List.Strings[i].Replace('^J', '');
