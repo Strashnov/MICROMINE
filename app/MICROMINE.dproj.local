@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
 	<Transactions>
-    <Transaction>1899.12.30 00:00:00.000.324,=C:\MICROMINE\app\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.371,=C:\MICROMINE\app\Unit1.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.002,C:\MICROMINE\app\Unit1.pas=C:\MICROMINE\app\DataModule\Components.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.324,=C:\MICROMINE\app\Unit1.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.081,=C:\MICROMINE\app\Unit1.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.098,=C:\MICROMINE\app\Unit1.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.420,C:\MICROMINE\app\Unit1.pas=C:\MICROMINE\app\Unit\ExportToFile.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.502,=\\Mac\Home\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.301,=\\Mac\Home\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
@@ -15,12 +15,12 @@
     <Transaction>1899.12.30 00:00:00.000.483,C:\MICROMINE\app\Unit\Printer.pas=C:\MICROMINE\app\Unit1.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.002,C:\MICROMINE\app\Unit1.dfm=C:\MICROMINE\app\DataModule\Components.dfm</Transaction>
     <Transaction>1899.12.30 00:00:00.000.707,=C:\MICROMINE\app\Unit\ANSIToByte.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.371,=C:\MICROMINE\app\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.098,=C:\MICROMINE\app\Unit1.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.038,\\Mac\Home\Documents\Embarcadero\Studio\Projects\Unit1.fmx=C:\MICROMINE\app\Main.fmx</Transaction>
     <Transaction>1899.12.30 00:00:00.000.529,\\Mac\Home\Documents\Embarcadero\Studio\Projects\Project1.dproj=C:\MICROMINE\app\MICROMINE.dproj</Transaction>
     <Transaction>1899.12.30 00:00:00.000.670,C:\MICROMINE\app\Unit1.fmx=C:\MICROMINE\app\Forms\About.fmx</Transaction>
   </Transactions>
 	<ActiveMobileDevice>
-		<NoProfile Android="emulator-5554" Android64=""/>
+		<NoProfile Android="" Android64=""/>
 	</ActiveMobileDevice>
 </BorlandProject>
