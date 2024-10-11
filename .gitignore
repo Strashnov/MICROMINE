@@ -1,6 +1,6 @@
 app/Win32 
 app/_histroy 
-app/DataModule/_histroy 
+app/DataModule/_history 
 app/DataModule/_recovery 
 app/Forms/_recovery 
 app/Forms/_history 
